@@ -34,7 +34,7 @@ public class ChatGateway implements chat.ChatConstants {
         }
     }
     
-    public List<String> getRooms(){
+    public synchronized List<String> getRooms(){
         List<String> roomlist = new ArrayList();
         outputToServer.println(GET_ROOMLIST);
         outputToServer.flush();
@@ -50,21 +50,21 @@ public class ChatGateway implements chat.ChatConstants {
         return roomlist;
     }
     
-    public void sendRoom(String r){
+    public synchronized void sendRoom(String r){
         outputToServer.println(SEND_ROOM);
         outputToServer.println(r);
         outputToServer.flush();
     }
 
     // Start the chat by sending in the user's handle.
-    public void sendHandle(String handle) {
+    public synchronized void sendHandle(String handle) {
         outputToServer.println(SEND_HANDLE);
         outputToServer.println(handle);
         outputToServer.flush();
     }
 
     // Send a new comment to the server.
-    public void sendComment(String comment) {
+    public synchronized void sendComment(String comment) {
         outputToServer.println(SEND_COMMENT);
         outputToServer.println(comment);
         outputToServer.flush();
@@ -72,7 +72,7 @@ public class ChatGateway implements chat.ChatConstants {
 
     // Ask the server to send us a count of how many comments are
     // currently in the transcript.
-    public int getCommentCount() {
+    public synchronized int getCommentCount() {
         outputToServer.println(GET_COMMENT_COUNT);
         outputToServer.flush();
         int count = 0;
@@ -85,7 +85,7 @@ public class ChatGateway implements chat.ChatConstants {
     }
 
     // Fetch comment n of the transcript from the server.
-    public String getComment(int n) {
+    public synchronized String getComment(int n) {
         outputToServer.println(GET_COMMENT);
         outputToServer.println(n);
         outputToServer.flush();
